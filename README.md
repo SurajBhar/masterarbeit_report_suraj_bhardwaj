@@ -23,11 +23,25 @@ The thesis document is organized into distinct chapters, each implemented as sep
 ├── math_commands.tex                       # Mathematical commands used in the thesis
 ├── symbols.tex                             # List of symbols used in the thesis
 └── Images_Thesis/                          # Folder containing images used in the document
-
+```
 
 ## Compilation Instructions
 To compile the full thesis document into a PDF, ensure you have a LaTeX distribution installed (such as TeX Live or MikTeX), along with any necessary packages for bibliography and image handling.
 Or You can use Overleaf to compile it.
+
+### Steps to Compile:
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/user1168/masterarbeit_report_suraj_bhardwaj.git
+    cd masterarbeit_report_suraj_bhardwaj
+    ```
+
+2. Compile the LaTeX document:
+    ```bash
+    pdflatex iclr2024_conference.tex
+    ```
+
+This will generate the final PDF file containing the complete thesis, including all chapters, figures, tables, and references.
 
 ## LaTeX Template
 The LaTeX template used in this thesis is based on the ICLR2024 conference template. The structure has been modified to accommodate the writing of a thesis document while retaining the clean formatting and styles originally intended for conference papers. All modifications are done to extend the capabilities of the template, including chapter-based content division, a dedicated bibliography, and glossary support.
