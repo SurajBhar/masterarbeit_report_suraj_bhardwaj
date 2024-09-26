@@ -1,0 +1,114 @@
+\chapter{Ablation Studies}
+
+\section{Ablation Studies}
+This section contains the tables for the hyperparameter grid search experiments.
+\begin{table}[t]
+\caption{Performance Impact of CosineAnnealing Scheduler}
+\label{table:cosineannealing-tmax}
+\begin{center}
+\small
+\begin{tabular}{lllllll}
+\multicolumn{4}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{T Max} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+1 & Adam - CosineAnnealing & 0.01 & 100 & 98.12\% & 75.97\% & 22.15\% \\
+2 & Adam - CosineAnnealing & 0.03 & 100 & 98.38\% & 73.45\% & 24.93\% \\
+3 & Adam - CosineAnnealing & 0.003 & 100 & 97.73\% & 79.88\% & 17.84\% \\
+4 & Adam - CosineAnnealing & 0.06 & 100 & 98.56\% & 72.52\% & 26.04\% \\
+5 & SGD - CosineAnnealing & 0.01 & 100 & 96.62\% & 80.36\% & 16.26\% \\
+6 & SGD - CosineAnnealing & 0.03 & 100 & 97.32\% & 79.50\% & 17.82\% \\
+7 & SGD - CosineAnnealing & 0.003 & 100 & 95.21\% & 81.08\% & 14.13\% \\
+8 & SGD - CosineAnnealing & 0.06 & 100 & 97.73\% & 78.99\% & 18.74\% \\
+9 & Adam - CosineAnnealing & 0.01 & 10 & 97.78\% & 77.25\% & 20.53\% \\
+10 & Adam - CosineAnnealing & 0.03 & 10 & 97.95\% & 68.79\% & 29.16\% \\
+11 & Adam - CosineAnnealing & 0.003 & 10 & 97.66\% & 76.45\% & 21.21\% \\
+12 & Adam - CosineAnnealing & 0.06 & 10 & 94.25\% & 67.92\% & 26.33\% \\
+13 & SGD - CosineAnnealing & 0.01 & 10 & 96.54\% & 80.54\% & 16.00\% \\
+14 & SGD - CosineAnnealing & 0.03 & 10 & 97.33\% & 78.94\% & 18.38\% \\
+15 & SGD - CosineAnnealing & 0.003 & 10 & 95.21\% & 81.77\% & 13.43\% \\
+16 & SGD - CosineAnnealing & 0.06 & 10 & 97.53\% & 75.76\% & 21.77\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%% Linear Decay %%%%%%%%%%%%%%%%%%%
+\begin{table}[t]
+\caption{Detailed Analysis of LinearDecay Scheduler Experiments}
+\label{table:lineadecay-detailed}
+\begin{center}
+\small
+\begin{tabular}{lllllll}
+\multicolumn{2}{c}{\bf{Experiment Details}} & \multicolumn{2}{c}{\bf{Learning Rate}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial-End LR} & \bf{Slope} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+17 & SGD - LinearDecay & 0.02 - 0.01 & -0.0001 & 97.36\% & 79.62\% & 17.74\% \\
+18 & SGD - LinearDecay & 0.03 - 0.02 & -0.0001 & 97.68\% & 79.88\% & 17.80\% \\
+19 & SGD - LinearDecay & 0.04 - 0.03 & -0.0001 & 97.82\% & 78.13\% & 19.69\% \\
+20 & SGD - LinearDecay & 0.05 - 0.04 & -0.0001 & 97.87\% & 77.09\% & 20.78\% \\
+21 & SGD - LinearDecay & 0.07 - 0.06 & -0.0001 & 97.94\% & 73.03\% & 24.91\% \\
+22 & SGD - LinearDecay & 0.0004 - 0.0002 & -0.000002 & 92.05\% & 83.87\% & 8.18\% \\
+23 & SGD - LinearDecay & 0.0005 - 0.0001 & -0.000004 & 92.00\% & 83.83\% & 8.17\% \\
+24 & Adam - LinearDecay & 0.0004 - 0.0002 & -0.000002 & 96.66\% & 80.86\% & 15.80\% \\
+25 & SGD - LinearDecay & 0.00045 - 0.00015 & -0.0000025 & 92.62\% & 83.45\% & 9.18\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Step Decay, Exp, Constant LR %%%%%%%%%%%
+\begin{table}[t]
+\caption{Performance Impact of StepDecay Scheduler}
+\label{table:stepdecay-performance}
+\begin{center}
+\small
+\begin{tabular}{llllll}
+\multicolumn{3}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+26 & SGD - StepDecay/20 & 0.01 & 95.68\% & 81.36\% & 14.32\% \\
+27 & SGD - StepDecay/20 & 0.03 & 96.81\% & 80.24\% & 16.57\% \\
+28 & SGD - StepDecay/20 & 0.003 & 93.94\% & 81.72\% & 12.21\% \\
+29 & SGD - StepDecay/20 & 0.06 & 97.24\% & 79.77\% & 17.48\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[t]
+\caption{Performance Impact of ExponentialDecay Scheduler}
+\label{table:exponentialdecay-performance}
+\begin{center}
+\small
+\begin{tabular}{llllll}
+\multicolumn{3}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+30 & SGD - ExponentialDecay & 0.01 & 96.32\% & 80.33\% & 15.99\% \\
+31 & SGD - ExponentialDecay & 0.03 & 97.39\% & 78.90\% & 18.49\% \\
+32 & SGD - ExponentialDecay & 0.003 & 94.95\% & 81.08\% & 13.87\% \\
+33 & SGD - ExponentialDecay & 0.06 & 97.75\% & 78.51\% & 19.24\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[t]
+\caption{Performance Impact of ConstantLR Scheduler}
+\label{table:constantlr-performance}
+\begin{center}
+\small
+\begin{tabular}{llllll}
+\multicolumn{3}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+34 & SGD - ConstantLR & 0.001 & 94.76\% & 81.07\% & 13.70\% \\
+35 & SGD - ConstantLR & 0.003 & 96.03\% & 81.39\% & 14.64\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}

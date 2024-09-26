@@ -1,0 +1,29 @@
+%%%%%%%%%%%%%%%%%%%%%%%% Chapter 7: Conclusions and Future Work %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusions and Future Work}
+\label{Conclusions and Future Work}
+This thesis summarizes the findings from chapter~\ref{chapter:Experiments and Results}, based on the initial research questions provided in section~\ref{section:research_questions}. The subsequent sections present the conclusions and possibilities for future research to stimulate subsequent progress in the discipline.
+
+\section{Conclusions}
+This thesis addressed key questions surrounding improved driver distraction detection using self-supervised learning techniques, emphasizing data imbalance solutions, benefits of pretrained vision transformers, and the impact of different image views and data modalities. Our research introduced the `Clustered Feature Weighting' dataloading technique using HDBSCAN and a weighted random sampler, which proved effective in balancing the data distribution in training batches, enhancing model robustness against overfitting, and improving overall model performance across various datasets and views. The findings showed that using a vision transformer encoder pretrained with self-supervised learning, specifically DINOv2, significantly benefits model performance due to better feature extraction capabilities compared to supervised learning methods. This was particularly evident in the superior cross-modality generalization results observed with self-supervised learning-based encoders.
+
+The experiments conducted highlighted the potential of self-supervised learning to provide high initial balanced accuracies and a more consistent performance across different modalities and views. However, despite the improvements, challenges remain in cross-view generalization, especially in the NIR Front Top view dataset. These results confirm the essential role of customized training and the necessity for domain-specific adaptations in leveraging the full capabilities of advanced deep learning models for practical applications, such as detecting driver distraction.
+
+\section{Future Work}
+This thesis has established a foundational approach to using self-supervised learning for driver distraction detection. However, several avenues for enhancement and further exploration remain:
+
+\begin{itemize}
+    \item \textbf{Enhancement of Clustered Feature Weighting:} The clustered feature weighting strategy could benefit from the integration of a DINOv2-based encoder in place of the current supervised learning based encoder. This change would likely enhance the quality of feature extraction, which is crucial for effective clustering and subsequently for the performance of the `Clustered Feature Weighting' technique. Improved feature extraction through the DINOv2 encoder may lead to more distinct and informative clusters, potentially increasing the accuracy of the proposed `Clustered Feature Weighting' technique.
+
+    \item \textbf{Hyperparameter Optimization:} Experiment 3 suggested potential underfitting, indicating that different hyperparameter configurations might enhance the model's learning capacity. Future studies could explore optimization techniques to refine these parameters for better model performance.
+
+    \item \textbf{Extended Pretraining and Fine-Tuning:} Given the challenges in cross-view generalization, particularly with the NIR Front Top view, it may be beneficial to extend pretraining phases or employ fine-tuning on specific datasets to improve the encoder’s adaptability to diverse conditions.
+
+    \item \textbf{Adoption of Hierarchical Transformers:} Modifying the DINOv2~\citep{dinov2_oquab2023dinov2} self-supervised approach to incorporate a hierarchical vision transformer model, such as 'Hiera'~\citep{ryali2023hiera}, as a backbone could provide deeper and more structured feature representations. This adaptation, combined with further fine-tuning on image datasets extracted from the \gls{daa} video datasets~\citep{martin2019drive_and_act_2019_iccv}, could significantly enhance driver distraction detection capabilities.
+
+    \item \textbf{Improving Generalization Across Modalities and Views:} To advance the cross-modality and cross-view generalization, integrating different views and modalities present in the \gls{daa} dataset could be beneficial. Additionally, employing a fusion of vision models with text-guided classification might offer a more comprehensive approach to detect driver distractions by leveraging multiple data types and their inherent correlations.
+
+    \item \textbf{Integration with Cognitive and Audio Data:} For a holistic approach to detecting driver distraction, combining the visual models with audio models and EEG data (which records the brain's electrical activity) could provide insights into the cognitive state of drivers, thereby enhancing the detection accuracy. This comprehensive approach enables the models to evaluate cognitive component as well as the physical component of driver distraction. The audio models can be used in a feedabck ADAS system to alert the distracted driver.
+
+    \item \textbf{Optimization for Real-Time Applications:} Ensuring the models are practical for in-vehicle use involves optimizing them for size and response time. This optimization includes refining the models to operate efficiently within the computational constraints of real-time systems, ensuring they can function seamlessly in live environments without lag.
+\end{itemize}

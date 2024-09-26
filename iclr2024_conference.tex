@@ -1,0 +1,266 @@
+\documentclass{report} % For LaTeX2e
+\usepackage{iclr2024_conference,times}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+\usepackage{hyperref}
+\usepackage{url}
+%%%%%% Solution for URL line break %%%
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+
+% Add PGFPlots and TikZ packages
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot} % Only if you need date plots
+\pgfplotsset{compat=newest} % Use this to always use the latest version available
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows} % For flow Charts
+\usetikzlibrary{trees} % Loading the trees library for hierarchical diagrams
+\usepackage[edges]{forest} % For drawing hierarchical trees
+\usetikzlibrary{arrows.meta} % For custom arrow tips in trees
+
+\usepackage{lscape}
+\usepackage{amsmath}
+
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\input{glossaries.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{algorithmic}
+\usepackage{float} % For the H placement specifier
+
+%%%%%%%%%%%%%%%%%%%%%======== Code for the Title Page===%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{utf8}{inputenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \includegraphics[width=0.3\textwidth]{UNIS-Dachmarke_rgb.jpg}\hfill
+    \includegraphics[width=0.3\textwidth]{iosb_logo.png}
+    \vspace{1.0cm}
+    
+    % Thesis Title
+    \Large{\textbf{Master Thesis}}\\
+    \vspace{1.0cm}
+    \Large{\textbf{Improved Driver Distraction Detection Using Self-Supervised Learning}}\\
+    \vspace{1.0cm}
+    
+    % Author and Matriculation Number
+    \normalsize{by}\\
+    \vspace{0.5cm}
+    \large{\textbf{Suraj Bhardwaj}}\\
+    \normalsize{University of Siegen}\\
+    \vspace{1.0cm}
+    
+    % Supervisors and Examiners
+    \large{\textbf{Examiner 1: Prof. Dr. Michael Möller}}\\
+    \normalsize{Head of Computer Vision Group}\\
+    \normalsize{University of Siegen}\\
+    \vspace{1.0cm}
+
+    \large{\textbf{Examiner 2: Dr. Jovita Lukasik}}\\
+    \normalsize{Post-Doctoral Researcher at Computer Vision Group}\\
+    \normalsize{University of Siegen}\\
+    \vspace{1.0cm}
+
+    % Company Supervisor
+    \large{\textbf{Additional Supervisor: David Lerch M.Sc.}}\\
+    \normalsize{Perceptual User Interface Group}\\
+    \normalsize{Fraunhofer IOSB, Karlsruhe}\\
+    \vspace{1.5cm}
+    
+    % Thesis Submission Statement
+    \normalsize{A Thesis Submitted to the Faculty of Electrical Engineering and Computer Science}\\
+    \normalsize{In Partial Fulfillment of the Requirements for the Degree of Master of Science (M.Sc.)}\\
+    \normalsize{\textbf{International Graduate Studies in Mechatronics}}\\
+    \vfill
+    \rule{\textwidth}{0.4pt}
+    \normalsize{Universität Siegen}\\
+    \normalsize{North Rhine-Westphalia, Germany}\\
+    \normalsize{Date of Submission: 15 May 2024}\\
+\end{titlepage}
+
+% \section* is used for unnumbered sections like Declaration, Acknowledgments, and Abstract.
+\chapter*{Declaration of Authorship}
+
+I hereby confirm that this thesis and the work presented in it is entirely my own. Where I have
+consulted the work of others this is always clearly stated. All statements taken literally from other
+writings or referred to by analogy are marked and the source is always given. This paper has not yet
+been submitted to another examination office, either in the same or similar form. 
+
+\vspace{10mm} % Adjust the vertical space as needed
+
+\noindent
+\begin{tabular}{@{}lll@{}}
+    Place, Date: & \textbf{Siegen, 15 May, 2024} & \hspace{1cm} Student's Signature: \hrulefill \\
+\end{tabular}
+
+\chapter*{Acknowledgments}
+I am deeply grateful to my advisors, Prof. Dr. Michael Möller, Dr. Jovita Lukasik, and David Lerch M.Sc., for their invaluable guidance, enduring patience, and profound expertise throughout my research journey. Their insightful feedback and thoughtful recommendations were instrumental in shaping this thesis.
+
+I also want to thank everyone at the Perceptual User Interface Department at Fraunhofer IOSB, Karlsruhe, for their support and for providing the tools and environment I needed for my work. My peers and colleagues at Fraunhofer IOSB also deserve profound acknowledgment for their friendship, engaging discussions during our regular student workshops, and the shared insights that significantly enriched my graduate experience.
+
+I would also like to recognize the pioneering authors and researchers in my field whose foundational work has inspired and guided my research. Their significant contributions have illuminated my path and set a high standard for my work.
+
+Finally, heartfelt gratitude goes to my family—my parents, Shri Sohan Singh and Smt. Jai Dei, and my niece Shivanshi. Their endless support and understanding through the demands of my academic pursuits have been a constant source of strength and motivation. Their love and encouragement have been the pillars of my strength and inspiration.
+
+%Table of Contents
+\newpage
+\tableofcontents
+
+%List of Figures
+\newpage
+\listoffigures
+
+%List of Tables
+\newpage
+\listoftables
+
+% Abbreviations
+\newpage
+\printglossary[type=\acronymtype]
+
+\chapter*{Abstract}
+This thesis investigates the binary classification task of classifying driver distraction using \gls{daa}~\citep{martin2019drive_and_act_2019_iccv} image datasets and vision transformer encoders that are pre-trained using Supervised and \gls{ssl} learning approaches respectively. The main focus is dealing with data imbalance, comparing the performance of vision transformer encoders pre-trained using supervised and \gls{ssl} approaches, and evaluating their ability to generalize across different views and modalities. In order to utilize the \gls{daa} video dataset, this thesis creates image datasets derived from the \gls{daa} dataset's videos. This study presents the `Clustered Feature Weighting' dataloading technique as a solution to the data imbalance issue in the image datasets derived from \gls{daa}~\citep{martin2019drive_and_act_2019_iccv} video dataset. This approach uses the HDBSCAN~\citep{HDBSCAN_algo_campello2013density} algorithm for unsupervised clustering of features extracted by a pre-trained vision transformer model. It also incorporates a weighted random sampler~\citep{pytorchweightedrandomsampler} to balance the training batches based on generated weights using unsupervised clustering. The results show that `Clustered Feature Weighting' successfully achieves a balanced class distribution in batches during data loading. Additionally, it shows signs of improvements in model performance on the Kinect Color \gls{daa} dataset~\citep{martin2019drive_and_act_2019_iccv}. Specifically, it increases the train balanced accuracy by 1.03\%, the validation balanced accuracy by 0.5\%, and the test balanced accuracy by 0.08\% compared to the traditional imbalanced dataloading method. Nevertheless, additional research is necessary to elucidate this technique's potential advantages and disadvantages for model training and generalization.
+
+Furthermore, this thesis evaluates cross-view generalization across two different image views (right top and front top) and cross-modality generalization across two modalities (RGB and infrared) from \gls{daa} dataset on the driver distraction detection task. The SSL-based encoder consistently performed well in all permutations, especially when using infrared or grayscale imagery. Despite the problems in cross-view generalization, the findings affirm that \gls{ssl} based encoders have the potential to enhance the adaptability and robustness of driver distraction detection systems. The comparison between the SSL-based vision transformer~\citep{Vit_Paper_Dosovitskiy2020AnII} encoder, specifically the DINOv2~\citep{dinov2_oquab2023dinov2} based vit\_b\_14 encoder~\citep{dinov2_github}, and the supervised learning-based vit\_b\_16~\citep{vit_b_16_pytorch} encoder, demonstrated that the SSL-based model displayed remarkable feature extraction abilities, leading to significantly improved performance, especially in tasks that require generalization across grayscale or \gls{inr} image modality. On the \gls{kir} \gls{daa} cross-modality test dataset, the \gls{ssl}-based model showed a higher performance level on cross-modality generalization than the supervised learning-based model, with an improvement of up to 7.17\% . While the initial train balanced accuracies are satisfactory, underfitting highlights the urgent need for better hyperparameter optimization to fully use the model's potential. This thesis contributes significantly to automotive safety, demonstrating the feasibility and advantages of employing \gls{ssl}-based encoders for improving driver distraction detection.
+
+\textbf{Keywords:} Self-Supervised Learning, Driver Distraction Detection, Cross-Modality Generalisation, Cross-View Generalisation, Drive and Act Image Dataset, Dataset Imbalance, Vision Transformer. 
+
+\include{Ch_01_introduction}
+\include{Ch_02_related_work}
+\include{Ch_03_Background}
+\include{Ch_04_Method}
+\include{Ch_05_Experiments}
+\include{Ch_06_Conclusions_and_Future_work}
+\printglossary
+\bibliography{iclr2024_conference}
+\bibliographystyle{iclr2024_conference}
+\newpage
+
+\chapter*{Appendix A} % Use chapter* to prevent ToC entry
+\addcontentsline{toc}{chapter}{Appendix A} % Add custom ToC entry
+\label{appendix}
+\begin{table}[h]
+\caption[Hyperparameter search experiments conducted using cosine annealing scheduler]{Hyperparameter Search Experiments conducted using Cosine Annealing Scheduler. Two configurations were chosen for the maximum number of iteration parameter of the CosineAnnealing Scheduler. Total 16 experiments were conducted as shown in the table, which resulted in overfitting.}
+\label{table:cosineannealing-tmax}
+\begin{center}
+\small
+\begin{tabular}{lllllll}
+\multicolumn{4}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{T Max} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+1 & Adam - CosineAnnealing & 0.01 & 100 & 98.12\% & 75.97\% & 22.15\% \\
+2 & Adam - CosineAnnealing & 0.03 & 100 & 98.38\% & 73.45\% & 24.93\% \\
+3 & Adam - CosineAnnealing & 0.003 & 100 & 97.73\% & 79.88\% & 17.84\% \\
+4 & Adam - CosineAnnealing & 0.06 & 100 & 98.56\% & 72.52\% & 26.04\% \\
+5 & SGD - CosineAnnealing & 0.01 & 100 & 96.62\% & 80.36\% & 16.26\% \\
+6 & SGD - CosineAnnealing & 0.03 & 100 & 97.32\% & 79.50\% & 17.82\% \\
+7 & SGD - CosineAnnealing & 0.003 & 100 & 95.21\% & 81.08\% & 14.13\% \\
+8 & SGD - CosineAnnealing & 0.06 & 100 & 97.73\% & 78.99\% & 18.74\% \\
+9 & Adam - CosineAnnealing & 0.01 & 10 & 97.78\% & 77.25\% & 20.53\% \\
+10 & Adam - CosineAnnealing & 0.03 & 10 & 97.95\% & 68.79\% & 29.16\% \\
+11 & Adam - CosineAnnealing & 0.003 & 10 & 97.66\% & 76.45\% & 21.21\% \\
+12 & Adam - CosineAnnealing & 0.06 & 10 & 94.25\% & 67.92\% & 26.33\% \\
+13 & SGD - CosineAnnealing & 0.01 & 10 & 96.54\% & 80.54\% & 16.00\% \\
+14 & SGD - CosineAnnealing & 0.03 & 10 & 97.33\% & 78.94\% & 18.38\% \\
+15 & SGD - CosineAnnealing & 0.003 & 10 & 95.21\% & 81.77\% & 13.43\% \\
+16 & SGD - CosineAnnealing & 0.06 & 10 & 97.53\% & 75.76\% & 21.77\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%% Linear Decay %%%%%%%%%%%%%%%%%%%
+\begin{table}[]
+\caption[Hyperparameter Search Experiments conducted using LinearDecay Scheduler.]{Hyperparameter Search Experiments conducted using LinearDecay Scheduler. The results shows that only experiment number 22 is showing better results as compare to other experiments. However, there are signs of overfitting in each experiemnt. Experiment 22 showed stable training as compare to other experiments and is overfitting less when compared to all other experiments.}
+\label{table:lineadecay-detailed}
+\begin{center}
+\small
+\begin{tabular}{lllllll}
+\multicolumn{2}{c}{\bf{Experiment Details}} & \multicolumn{2}{c}{\bf{Learning Rate}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial-End LR} & \bf{Slope} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+17 & SGD - LinearDecay & 0.02 - 0.01 & -0.0001 & 97.36\% & 79.62\% & 17.74\% \\
+18 & SGD - LinearDecay & 0.03 - 0.02 & -0.0001 & 97.68\% & 79.88\% & 17.80\% \\
+19 & SGD - LinearDecay & 0.04 - 0.03 & -0.0001 & 97.82\% & 78.13\% & 19.69\% \\
+20 & SGD - LinearDecay & 0.05 - 0.04 & -0.0001 & 97.87\% & 77.09\% & 20.78\% \\
+21 & SGD - LinearDecay & 0.07 - 0.06 & -0.0001 & 97.94\% & 73.03\% & 24.91\% \\
+22 & SGD - LinearDecay & 0.0004 - 0.0002 & -0.000002 & 92.05\% & 83.87\% & 8.18\% \\
+23 & SGD - LinearDecay & 0.0005 - 0.0001 & -0.000004 & 92.00\% & 83.83\% & 8.17\% \\
+24 & Adam - LinearDecay & 0.0004 - 0.0002 & -0.000002 & 96.66\% & 80.86\% & 15.80\% \\
+25 & SGD - LinearDecay & 0.00045 - 0.00015 & -0.0000025 & 92.62\% & 83.45\% & 9.18\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Step Decay, Exp, Constant LR %%%%%%%%%%%
+\begin{table}[]
+\caption[Hyperparameter Search Experiments conducted using StepDecay Scheduler.]{Hyperparameter Search Experiments conducted using StepDecay Scheduler. Four experiments were conducted using step decay learning rate scheduler, each of which showed overfitting and unstability in training.}
+\label{table:stepdecay-performance}
+\begin{center}
+\small
+\begin{tabular}{llllll}
+\multicolumn{3}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+26 & SGD - StepDecay/20 & 0.01 & 95.68\% & 81.36\% & 14.32\% \\
+27 & SGD - StepDecay/20 & 0.03 & 96.81\% & 80.24\% & 16.57\% \\
+28 & SGD - StepDecay/20 & 0.003 & 93.94\% & 81.72\% & 12.21\% \\
+29 & SGD - StepDecay/20 & 0.06 & 97.24\% & 79.77\% & 17.48\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[]
+\caption[Hyperparameter Search Experiments conducted using ExponentialDecay Scheduler.]{Hyperparameter Search Experiments conducted using ExponentialDecay Scheduler. This table contains the four experiments conducted using exponential decay learning rate scheduler each of which is showing large gap between train and validation balance accuracy indicating overfitting.}
+\label{table:exponentialdecay-performance}
+\begin{center}
+\small
+\begin{tabular}{llllll}
+\multicolumn{3}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+30 & SGD - ExponentialDecay & 0.01 & 96.32\% & 80.33\% & 15.99\% \\
+31 & SGD - ExponentialDecay & 0.03 & 97.39\% & 78.90\% & 18.49\% \\
+32 & SGD - ExponentialDecay & 0.003 & 94.95\% & 81.08\% & 13.87\% \\
+33 & SGD - ExponentialDecay & 0.06 & 97.75\% & 78.51\% & 19.24\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[]
+\caption[Hyperparameter Search Experiments conducted using ConstantLR Scheduler]{Hyperparameter Search Experiments conducted using ConstantLR Scheduler. The table shows two experiments each of which is showing more than 10\% gap between train and validation balanced accuracy indicating overfitting.}
+\label{table:constantlr-performance}
+\begin{center}
+\small
+\begin{tabular}{llllll}
+\multicolumn{3}{c}{\bf{Experiment Details}} & \multicolumn{3}{c}{\bf{Balanced Accuracy}} \\
+\hline
+\bf{Exp No} & \bf{Optimizer-Scheduler} & \bf{Initial LR} & \bf{Train} & \bf{Validation} & \bf{Gap} \\
+\hline
+34 & SGD - ConstantLR & 0.001 & 94.76\% & 81.07\% & 13.70\% \\
+35 & SGD - ConstantLR & 0.003 & 96.03\% & 81.39\% & 14.64\% \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\end{document}
